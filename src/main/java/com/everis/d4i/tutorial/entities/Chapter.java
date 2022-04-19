@@ -1,6 +1,7 @@
 package com.everis.d4i.tutorial.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -34,6 +36,11 @@ public class Chapter implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SEASON_ID", nullable = false)
 	private Season season;
+	
+	@ManyToMany(mappedBy = "chapters")
+	private List<Actor> actors;
+	
+	//Getters and Setters
 
 	public Long getId() {
 		return id;
@@ -74,5 +81,15 @@ public class Chapter implements Serializable {
 	public void setSeason(Season season) {
 		this.season = season;
 	}
+
+	public List<Actor> getActors() {
+		return actors;
+	}
+
+	public void setActors(List<Actor> actors) {
+		this.actors = actors;
+	}
+	
+	
 
 }

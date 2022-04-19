@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -49,6 +48,10 @@ public class TvShow implements Serializable {
 			joinColumns = @JoinColumn(name = "TVSHOW_ID"),
 			inverseJoinColumns = @JoinColumn(name = "CATEGORIES_ID"))
 	private List<Category> category;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tvShow")
+	private List<Category> awards;
+	
 
 	@Column(name = "ADVERTISING", nullable = true)
 	private String advertising;
@@ -128,5 +131,15 @@ public class TvShow implements Serializable {
 	public void setSeasons(List<Season> seasons) {
 		this.seasons = seasons;
 	}
+
+	public List<Category> getAwards() {
+		return awards;
+	}
+
+	public void setAwards(List<Category> awards) {
+		this.awards = awards;
+	}
+	
+	
 
 }
