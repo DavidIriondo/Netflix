@@ -12,84 +12,74 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.everis.d4i.tutorial.controllers.TvShowController;
-import com.everis.d4i.tutorial.entities.TvShow;
+import com.everis.d4i.tutorial.controllers.ActorController;
+import com.everis.d4i.tutorial.entities.Actor;
 import com.everis.d4i.tutorial.exceptions.NetflixException;
-import com.everis.d4i.tutorial.json.TvShowRest;
+import com.everis.d4i.tutorial.json.ActorRest;
 import com.everis.d4i.tutorial.responses.NetflixResponse;
-import com.everis.d4i.tutorial.services.TvShowService;
-import com.everis.d4i.tutorial.services.impl.TvShowServiceImpl;
+import com.everis.d4i.tutorial.services.impl.ActorServiceImpl;
 import com.everis.d4i.tutorial.utils.constants.CommonConstants;
 import com.everis.d4i.tutorial.utils.constants.RestConstants;
 
+
+
 @RestController
-@RequestMapping(RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 + RestConstants.RESOURCE_TV_SHOW)
-public class TvShowControllerImpl implements TvShowController {
+@RequestMapping(RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 + RestConstants.RESOURCE_ACTOR)
+public class ActorControllerImpl implements ActorController{
 
 	@Autowired
-	private TvShowService tvShowService;
+	private ActorServiceImpl actorServiceImpl;
 	
-	@Autowired
-	private TvShowServiceImpl tvShowServiceImpl;
-
+	
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public NetflixResponse<List<TvShowRest>> getTvShowsByCategory(@RequestParam Long categoryId)
-			throws NetflixException {
+	public NetflixResponse<List<ActorRest>> getActors() throws NetflixException {
 		
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
-				tvShowService.getTvShowsByCategory(categoryId));
+				actorServiceImpl.getListOfActors());
 	}
 
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-	public NetflixResponse<TvShowRest> getTvShowById(@PathVariable Long id) throws NetflixException {
+	public NetflixResponse<ActorRest> getActorById(@PathVariable Long id) throws NetflixException {
+		
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
-				tvShowService.getTvShowById(id));
+				actorServiceImpl.getActorbyId(id));
 	}
 
-	
+	@Override
+	@ResponseStatus(HttpStatus.OK)
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public NetflixResponse<ActorRest> postActor(@RequestBody Actor actor) throws NetflixException {
+		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
+				actorServiceImpl.postActor(actor));
+	}
+
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@PatchMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-	public NetflixResponse<TvShowRest> updateTvShow(@PathVariable Long id, @RequestBody TvShow tvShow) throws NetflixException {
-		TvShowRest tv;
-		
-		//using the service implementation we update our tvShow resource
-		tv = tvShowServiceImpl.updateTvShow(id, tvShow);
-		
+	public NetflixResponse<ActorRest> updateActor(@PathVariable Long id,@RequestBody Actor actor) throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
-				tv);
+				actorServiceImpl.updateActor(id, actor));
 	}
 
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@DeleteMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-	public NetflixResponse<TvShowRest> deleteTvShow(@PathVariable Long id) throws NetflixException {
-		TvShowRest tv;
-		
-		tv =  tvShowServiceImpl.deleteTvShow(id);
-		
+	public NetflixResponse<ActorRest> deleteActor(Long id) throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
-				tv);
+				actorServiceImpl.deleteActor(id));
 	}
 
 	@Override
-	@ResponseStatus(HttpStatus.OK)
-	@PostMapping(value = RestConstants.RESOURCE_ID + RestConstants.RESOURCE_CATEGORY, produces = MediaType.APPLICATION_JSON_VALUE)
-	public NetflixResponse<TvShowRest> addCategories(@PathVariable Long id, @RequestBody List<Long> list) throws NetflixException {
-		TvShowRest tv;
-		
-		tv =  tvShowServiceImpl.addCategories(id, list);
-		
-		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
-				tv);
+	public NetflixResponse<ActorRest> getActorTvShows(Long id) throws NetflixException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
