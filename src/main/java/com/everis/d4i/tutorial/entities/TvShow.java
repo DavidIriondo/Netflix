@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -41,9 +43,12 @@ public class TvShow implements Serializable {
 	@Column(name = "RECOMMENDED_AGE")
 	private byte recommendedAge;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CATEGORY_ID", nullable = false)
-	private Category category;
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "TV_SHOW_CATEGORIES",
+			joinColumns = @JoinColumn(name = "TVSHOW_ID"),
+			inverseJoinColumns = @JoinColumn(name = "CATEGORIES_ID"))
+	private List<Category> category;
 
 	@Column(name = "ADVERTISING", nullable = true)
 	private String advertising;
@@ -98,12 +103,13 @@ public class TvShow implements Serializable {
 	public void setRecommendedAge(byte recommendedAge) {
 		this.recommendedAge = recommendedAge;
 	}
+	
 
-	public Category getCategory() {
+	public List<Category> getCategory() {
 		return category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategory(List<Category> category) {
 		this.category = category;
 	}
 
