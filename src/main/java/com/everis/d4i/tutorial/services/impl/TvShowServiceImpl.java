@@ -9,10 +9,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.everis.d4i.tutorial.entities.Category;
 import com.everis.d4i.tutorial.entities.TvShow;
 import com.everis.d4i.tutorial.exceptions.NetflixException;
 import com.everis.d4i.tutorial.exceptions.NotFoundException;
 import com.everis.d4i.tutorial.json.TvShowRest;
+import com.everis.d4i.tutorial.repositories.CategoryRepository;
 import com.everis.d4i.tutorial.repositories.TvShowRepository;
 import com.everis.d4i.tutorial.services.TvShowService;
 
@@ -21,6 +23,9 @@ public class TvShowServiceImpl implements TvShowService {
 
 	@Autowired
 	private TvShowRepository tvShowRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	private ModelMapper modelMapper = new ModelMapper();
 
@@ -117,6 +122,28 @@ public class TvShowServiceImpl implements TvShowService {
 			
 		} catch (EntityNotFoundException entityNotFoundException) {
 			
+			throw new NotFoundException(entityNotFoundException.getMessage());
+		}
+	}
+
+	@Override
+	public TvShowRest addCategories(Long id, List<Long> categories_id) throws NetflixException {
+		
+		try {
+			//Find the tvShow
+			TvShow tv =  tvShowRepository.findById(id).get();
+			
+			//For each categories listed, we will add it to tvShow´s categories list
+			for (Long categoryId : categories_id) {
+				tv.getCategory().add(categoryRepository.findById(categoryId).get());
+			}
+			
+			//Save 
+			tvShowRepository.saveAndFlush(tv);
+			
+			//Return updated data
+			return modelMapper.map(tv, TvShowRest.class);
+		} catch (EntityNotFoundException entityNotFoundException) {
 			throw new NotFoundException(entityNotFoundException.getMessage());
 		}
 	}

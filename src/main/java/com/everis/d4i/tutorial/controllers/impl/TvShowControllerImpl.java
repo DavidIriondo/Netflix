@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,6 +74,18 @@ public class TvShowControllerImpl implements TvShowController {
 		TvShowRest tv;
 		
 		tv =  tvShowServiceImpl.deleteTvShow(id);
+		
+		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
+				tv);
+	}
+
+	@Override
+	@ResponseStatus(HttpStatus.OK)
+	@PostMapping(value = RestConstants.RESOURCE_ID + RestConstants.RESOURCE_CATEGORY, produces = MediaType.APPLICATION_JSON_VALUE)
+	public NetflixResponse<TvShowRest> addCategories(@PathVariable Long id, @RequestBody List<Long> list) throws NetflixException {
+		TvShowRest tv;
+		
+		tv =  tvShowServiceImpl.addCategories(id, list);
 		
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				tv);
