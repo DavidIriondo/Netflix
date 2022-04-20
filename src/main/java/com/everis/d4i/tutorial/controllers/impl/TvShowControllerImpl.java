@@ -22,6 +22,8 @@ import com.everis.d4i.tutorial.exceptions.NetflixException;
 import com.everis.d4i.tutorial.json.AwardRest;
 import com.everis.d4i.tutorial.json.TvShowRest;
 import com.everis.d4i.tutorial.responses.NetflixResponse;
+import com.everis.d4i.tutorial.security.repositories.UserRepository;
+import com.everis.d4i.tutorial.security.services.Impl.UserServiceImpl;
 import com.everis.d4i.tutorial.services.TvShowService;
 import com.everis.d4i.tutorial.services.impl.TvShowServiceImpl;
 import com.everis.d4i.tutorial.utils.constants.CommonConstants;
@@ -36,7 +38,7 @@ public class TvShowControllerImpl implements TvShowController {
 	
 	@Autowired
 	private TvShowServiceImpl tvShowServiceImpl;
-
+	
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
