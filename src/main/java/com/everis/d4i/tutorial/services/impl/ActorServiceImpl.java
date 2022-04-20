@@ -85,7 +85,7 @@ public class ActorServiceImpl implements ActorService{
 			//Save information
 			actorRepository.save(ac);
 			
-			return modelMapper.map(actor, ActorRest.class);
+			return modelMapper.map(ac, ActorRest.class);
 			
 		}catch(Exception e) {
 			LOGGER.error(ExceptionConstants.INTERNAL_SERVER_ERROR, e);
@@ -102,7 +102,7 @@ public class ActorServiceImpl implements ActorService{
 			Actor ac =actorRepository.getOne(id);
 			//Delete actor
 			actorRepository.delete(ac);
-			
+			actorRepository.flush();
 			//return
 			
 			return modelMapper.map(ac, ActorRest.class);

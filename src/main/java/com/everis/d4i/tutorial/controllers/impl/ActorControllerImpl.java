@@ -71,7 +71,7 @@ public class ActorControllerImpl implements ActorController{
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@DeleteMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-	public NetflixResponse<ActorRest> deleteActor(Long id) throws NetflixException {
+	public NetflixResponse<ActorRest> deleteActor(@PathVariable Long id) throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				actorServiceImpl.deleteActor(id));
 	}

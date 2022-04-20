@@ -16,8 +16,6 @@ public class AwardRest implements Serializable {
 	private String name;
 	
 	private Date date;
-	
-	private TvShow tvShow;
 
 	public Long getId() {
 		return id;
@@ -42,16 +40,6 @@ public class AwardRest implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
-	public TvShow getTvShow() {
-		return tvShow;
-	}
-
-	public void setTvShow(TvShow tvShow) {
-		this.tvShow = tvShow;
-	}
-
-	
 	
 	
 }

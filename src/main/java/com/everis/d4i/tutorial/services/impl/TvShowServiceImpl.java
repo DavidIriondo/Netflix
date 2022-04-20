@@ -9,11 +9,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.everis.d4i.tutorial.entities.Award;
 import com.everis.d4i.tutorial.entities.Category;
 import com.everis.d4i.tutorial.entities.TvShow;
 import com.everis.d4i.tutorial.exceptions.NetflixException;
 import com.everis.d4i.tutorial.exceptions.NotFoundException;
+import com.everis.d4i.tutorial.json.AwardRest;
 import com.everis.d4i.tutorial.json.TvShowRest;
+import com.everis.d4i.tutorial.repositories.AwardRepository;
 import com.everis.d4i.tutorial.repositories.CategoryRepository;
 import com.everis.d4i.tutorial.repositories.TvShowRepository;
 import com.everis.d4i.tutorial.services.TvShowService;
@@ -26,6 +29,9 @@ public class TvShowServiceImpl implements TvShowService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private AwardRepository awardRepository;
 
 	private ModelMapper modelMapper = new ModelMapper();
 
@@ -148,4 +154,13 @@ public class TvShowServiceImpl implements TvShowService {
 		}
 	}
 
+	@Override
+	public List<AwardRest> tvShowAwards(Long id) throws NetflixException {
+		
+		//Return a list of awards from a single tvshow
+		return tvShowRepository.getOne(id).getAwards().stream()
+				.map(award -> modelMapper.map(award, AwardRest.class)).collect(Collectors.toList());
+	}
+	
+	
 }

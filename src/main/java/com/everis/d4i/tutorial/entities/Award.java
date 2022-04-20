@@ -1,5 +1,6 @@
 package com.everis.d4i.tutorial.entities;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import javax.persistence.Column;
@@ -9,13 +10,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "AWARDS")
-public class Award {
+public class Award implements Serializable {
+
+	private static final long serialVersionUID = 4916713904971428569L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,7 +31,7 @@ public class Award {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TV_SHOW_ID", nullable = false)
-	private TvShow tvShow;
+	private TvShow tvShowAward;
 
 	//Getters and Setters
 	public Long getId() {
@@ -57,13 +59,11 @@ public class Award {
 	}
 
 	public TvShow getTvShows() {
-		return tvShow;
+		return tvShowAward;
 	}
 
-	public void setTvShows(TvShow tvShow) {
-		this.tvShow = tvShow;
+	public void setTvShows(TvShow tvShowAward) {
+		this.tvShowAward = tvShowAward;
 	}
 
-
-	
 	}

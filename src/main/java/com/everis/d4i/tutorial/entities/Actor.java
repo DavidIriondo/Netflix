@@ -1,5 +1,6 @@
 package com.everis.d4i.tutorial.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,7 +17,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ACTORS")
-public class Actor {
+public class Actor implements Serializable {
+
+	private static final long serialVersionUID = 4916713907852425156L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

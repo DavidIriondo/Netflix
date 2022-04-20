@@ -49,8 +49,8 @@ public class TvShow implements Serializable {
 			inverseJoinColumns = @JoinColumn(name = "CATEGORIES_ID"))
 	private List<Category> category;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tvShow")
-	private List<Category> awards;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tvShowAward")
+	private List<Award> awards;
 	
 
 	@Column(name = "ADVERTISING", nullable = true)
@@ -132,11 +132,11 @@ public class TvShow implements Serializable {
 		this.seasons = seasons;
 	}
 
-	public List<Category> getAwards() {
+	public List<Award> getAwards() {
 		return awards;
 	}
 
-	public void setAwards(List<Category> awards) {
+	public void setAwards(List<Award> awards) {
 		this.awards = awards;
 	}
 	
