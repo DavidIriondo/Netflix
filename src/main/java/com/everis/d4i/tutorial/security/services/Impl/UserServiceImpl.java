@@ -1,9 +1,14 @@
 package com.everis.d4i.tutorial.security.services.Impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.management.relation.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -76,7 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		User user = userRepository.findByName(username);
 		
 		//Roles, here we need to retrieve the user´roles from data base
-		List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
+		Set<GrantedAuthority> roles = new HashSet<GrantedAuthority>();
 		roles.add(new SimpleGrantedAuthority("ADMIN"));
 		
 		
@@ -95,5 +100,7 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		postUser(us);
 		
 	}
-
+        
 }
+
+
