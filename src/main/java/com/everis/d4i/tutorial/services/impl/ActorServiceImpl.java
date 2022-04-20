@@ -15,8 +15,10 @@ import com.everis.d4i.tutorial.entities.Chapter;
 import com.everis.d4i.tutorial.entities.TvShow;
 import com.everis.d4i.tutorial.exceptions.InternalServerErrorException;
 import com.everis.d4i.tutorial.exceptions.NetflixException;
+import com.everis.d4i.tutorial.json.ActorChapterRest;
 import com.everis.d4i.tutorial.json.ActorRest;
 import com.everis.d4i.tutorial.json.CategoryRest;
+import com.everis.d4i.tutorial.projections.ActorChapterProjection;
 import com.everis.d4i.tutorial.repositories.ActorRepository;
 import com.everis.d4i.tutorial.services.ActorService;
 import com.everis.d4i.tutorial.utils.constants.ExceptionConstants;
@@ -28,6 +30,7 @@ public class ActorServiceImpl implements ActorService{
 
 	@Autowired
 	private ActorRepository actorRepository;
+
 
 	private ModelMapper modelMapper = new ModelMapper();
 	
@@ -113,10 +116,13 @@ public class ActorServiceImpl implements ActorService{
 		
 	}
 
+	
 	@Override
-	public HashMap<TvShow, List<Chapter>> actorTvshows(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public List<ActorChapterProjection> actorTvshows(Long id) throws NetflixException {
+		
+		//Return a full list of of actors
+		return actorRepository.getActorChapters(id);
+			}
+
 
 }
