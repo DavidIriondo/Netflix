@@ -32,7 +32,7 @@ public class User implements Serializable {
 	@Column(name = "PASSWORD")
 	private String password;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "HAS_ROLE",
 			joinColumns = @JoinColumn(name = "USER_ID"),

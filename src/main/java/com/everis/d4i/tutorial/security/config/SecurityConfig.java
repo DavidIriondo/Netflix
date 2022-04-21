@@ -10,14 +10,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import com.everis.d4i.tutorial.security.services.Impl.UserServiceImpl;
 import com.everis.d4i.tutorial.utils.constants.RestConstants;
 
-@Configuration
+
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
@@ -34,22 +38,51 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		return bCryptPasswordEncoder;
 	}
+	
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {return NoOpPasswordEncoder.getInstance();}
 
 	@Autowired
-	protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	    auth.userDetailsService(userDetailsService());
 
-		auth.userDetailsService(userServiceImpl).passwordEncoder(bCrypt);
+	}
+	@Bean
+	@Override
+	public UserDetailsService userDetailsService() {
+	    UserDetails user =
+	            User.withDefaultPasswordEncoder()
+	                    .username("user")
+	                    .password("user")
+	                    .roles("USER")
+	                    .build();
+
+	    return new InMemoryUserDetailsManager(user);
 	}
 
 	@Override
     public void configure(HttpSecurity http) throws Exception {
-       http.csrf().disable()
+       http
        .authorizeRequests()
-       .antMatchers("/netflix/v1/**").hasAnyAuthority("USER")
+       .antMatchers("/**").hasRole("ADMIN")
        .and()
-       .formLogin()
-       .defaultSuccessUrl("/netflix/v1/swagger-ui.html", true)
-       .permitAll();
+       .formLogin().permitAll();
+       
+       
+       /*
+        http
+       .httpBasic()
+       .and()
+       .authorizeRequests()
+		.antMatchers(RestConstants.RESOURCE_TV_SHOW + "/**").hasAnyAuthority("ADMIN")
+	    .antMatchers(RestConstants.RESOURCE_ACTOR + "/**").hasAnyAuthority("USER")
+       .and()
+       .formLogin().permitAll()
+       .defaultSuccessUrl("/swagger-ui.html", true)
+       .and()
+       .logout().permitAll();
+        * */
+
     }
 	
 	

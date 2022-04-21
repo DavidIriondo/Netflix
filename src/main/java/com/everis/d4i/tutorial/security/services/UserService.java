@@ -2,6 +2,7 @@ package com.everis.d4i.tutorial.security.services;
 
 import java.util.List;
 
+import com.everis.d4i.tutorial.security.entities.Role;
 import com.everis.d4i.tutorial.security.entities.User;
 
 public interface UserService {
@@ -11,6 +12,8 @@ public interface UserService {
 	User getUserById(Long id);
 	
 	User getUserByName(String name);
+	
+	List<Role> getUserRoles(Long id);
 	
 	User postUser(User user);
 	

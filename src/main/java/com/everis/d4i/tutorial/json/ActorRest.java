@@ -19,7 +19,7 @@ public class ActorRest implements Serializable {
 	
 	private Integer age;
 	
-	private List<Chapter> chapters;
+	//private List<Chapter> chapters;
 
 	public Long getId() {
 		return id;
@@ -52,14 +52,14 @@ public class ActorRest implements Serializable {
 	public void setAge(Integer age) {
 		this.age = age;
 	}
-
+	/*
 	public List<Chapter> getChapters() {
 		return chapters;
 	}
 
 	public void setChapters(List<Chapter> chapters) {
 		this.chapters = chapters;
-	}
+	}*/
 	
 	
 	
