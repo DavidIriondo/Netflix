@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,47 +43,78 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {return NoOpPasswordEncoder.getInstance();}
 
+	//AUTHENTICATION
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-	    auth.userDetailsService(userDetailsService());
-
+	   auth.inMemoryAuthentication()
+	   .withUser("user")
+	   .password("{noop}user")
+	   .roles("USER")
+	   .and()
+	   .withUser("admin")
+	   .password("{noop}admin")
+	   .roles("ADMIN");
 	}
-	@Bean
-	@Override
-	public UserDetailsService userDetailsService() {
-	    UserDetails user =
-	            User.withDefaultPasswordEncoder()
-	                    .username("user")
-	                    .password("user")
-	                    .roles("USER")
-	                    .build();
-
-	    return new InMemoryUserDetailsManager(user);
-	}
-
+	
+	
+	//AUTHORIZATION
 	@Override
     public void configure(HttpSecurity http) throws Exception {
-       http
+		
+		http
+	   .csrf().disable()
        .authorizeRequests()
-       .antMatchers("/**").hasRole("ADMIN")
+       //ADD CATEGORIES TO A SINGLE SHOW TV
+       .antMatchers(HttpMethod.POST,RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 + RestConstants.RESOURCE_TV_SHOW +
+    		   RestConstants.RESOURCE_ID + RestConstants.RESOURCE_CATEGORY).hasRole("ADMIN")
+       //MODIFY TV SHOW´S NAME
+       .antMatchers(HttpMethod.PATCH,RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 + RestConstants.RESOURCE_TV_SHOW +
+    		   RestConstants.RESOURCE_ID).hasRole("ADMIN")
+       //MODIFY CHAPTER´S NAME
+       .antMatchers(HttpMethod.PATCH,RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 +RestConstants.RESOURCE_CHAPTER +
+    		   RestConstants.RESOURCE_ID).hasRole("ADMIN")
+       //DELETE TV SHOW
+       .antMatchers(HttpMethod.DELETE,RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 + RestConstants.RESOURCE_TV_SHOW +
+    		   RestConstants.RESOURCE_ID).hasRole("ADMIN")
+       //LIST OF ACTORS
+       .antMatchers(HttpMethod.GET, RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 +
+    		   RestConstants.RESOURCE_ACTOR).hasRole("USER")
+       //GET SINGLE ACTOR
+       .antMatchers(HttpMethod.GET, RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 +
+    		   RestConstants.RESOURCE_ACTOR + RestConstants.RESOURCE_ID).hasRole("USER")
+       //CREATE NEW ACTOR
+       .antMatchers(HttpMethod.POST, RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 +
+    		   RestConstants.RESOURCE_ACTOR).hasRole("ADMIN")
+       //MODIFY SINGLE ACTOR
+       .antMatchers(HttpMethod.PATCH, RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 +
+    		   RestConstants.RESOURCE_ACTOR + RestConstants.RESOURCE_ID).hasRole("ADMIN")
+       //DELETE SINGLE ACTOR
+       .antMatchers(HttpMethod.DELETE, RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 +
+    		   RestConstants.RESOURCE_ACTOR + RestConstants.RESOURCE_ID).hasRole("ADMIN")
+       //SINGLE ACTOR TVSHOWS
+       .antMatchers(HttpMethod.GET, RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 +
+    		   RestConstants.RESOURCE_ACTOR + RestConstants.RESOURCE_ID + RestConstants.RESOURCE_TV_SHOW).hasRole("USER")
+       //TV SHOW´S AWARDS
+       .antMatchers(HttpMethod.GET, RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 +
+    		   RestConstants.RESOURCE_TV_SHOW + RestConstants.RESOURCE_ID + RestConstants.RESOURCE_AWARD).hasRole("USER")
+       .anyRequest()
+       .authenticated()
        .and()
-       .formLogin().permitAll();
-       
-       
-       /*
-        http
+       .httpBasic();
+
+	       //.antMatchers("/netflix/v1/tv-shows/**").hasAnyRole("USER")
+		
+       /*http
        .httpBasic()
        .and()
        .authorizeRequests()
-		.antMatchers(RestConstants.RESOURCE_TV_SHOW + "/**").hasAnyAuthority("ADMIN")
-	    .antMatchers(RestConstants.RESOURCE_ACTOR + "/**").hasAnyAuthority("USER")
+       //Add categories to a single tv show
+       .antMatchers(HttpMethod.POST,RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 + RestConstants.RESOURCE_TV_SHOW +
+    		   "{^[\\d]$}" + RestConstants.RESOURCE_CATEGORY).hasAnyRole("ADMIN")
        .and()
-       .formLogin().permitAll()
-       .defaultSuccessUrl("/swagger-ui.html", true)
-       .and()
-       .logout().permitAll();
-        * */
+       .formLogin();*/
 
+       //.antMatchers("/netflix/v1/tv-shows/**").hasAnyRole("USER")*/
     }
 	
 	
