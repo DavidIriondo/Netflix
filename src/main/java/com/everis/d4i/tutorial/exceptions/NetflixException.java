@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.everis.d4i.tutorial.dto.ErrorDto;
 
-public abstract class NetflixException extends Exception {
+public abstract class NetflixException extends Exception{
 
 	private static final long serialVersionUID = -7482635401716007171L;
 

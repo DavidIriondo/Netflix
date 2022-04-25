@@ -102,19 +102,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
        .and()
        .httpBasic();
 
-	       //.antMatchers("/netflix/v1/tv-shows/**").hasAnyRole("USER")
-		
-       /*http
-       .httpBasic()
-       .and()
-       .authorizeRequests()
-       //Add categories to a single tv show
-       .antMatchers(HttpMethod.POST,RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 + RestConstants.RESOURCE_TV_SHOW +
-    		   "{^[\\d]$}" + RestConstants.RESOURCE_CATEGORY).hasAnyRole("ADMIN")
-       .and()
-       .formLogin();*/
-
-       //.antMatchers("/netflix/v1/tv-shows/**").hasAnyRole("USER")*/
     }
 	
 	
