@@ -44,22 +44,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	public PasswordEncoder getPasswordEncoder() {return NoOpPasswordEncoder.getInstance();}
 
 	//AUTHENTICATION
-	/*
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-	   auth.inMemoryAuthentication()
-	   .withUser("user")
-	   .password("{noop}user")
-	   .roles("USER")
-	   .and()
-	   .withUser("admin")
-	   .password("{noop}admin")
-	   .roles("ADMIN");
-	}*/
-	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 	   auth.userDetailsService(userServiceImpl).passwordEncoder(bCrypt);
+	   
+	   /*
+	    * USERS FROM DATABASE: user1, user2, admin2
+	    * 
+	    * PASSWORD : 1234
+	    * 
+	    * same password for all users and admin
+	    * 
+	    * */
 	}
 	
 	
@@ -109,6 +105,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
        .httpBasic();
 
     }
+	
+	/*
+	 * AUTHENTICATION WITH OUT BBDD
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	   auth.inMemoryAuthentication()
+	   .withUser("user")
+	   .password("{noop}user")
+	   .roles("USER")
+	   .and()
+	   .withUser("admin")
+	   .password("{noop}admin")
+	   .roles("ADMIN");
+	}*/
 	
 	
 }
