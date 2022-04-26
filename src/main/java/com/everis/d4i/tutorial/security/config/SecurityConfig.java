@@ -38,12 +38,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	public BCryptPasswordEncoder passwordEncoder() {
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		return bCryptPasswordEncoder;
-	}
+	} 
 	
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {return NoOpPasswordEncoder.getInstance();}
 
 	//AUTHENTICATION
+	/*
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 	   auth.inMemoryAuthentication()
@@ -54,6 +55,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	   .withUser("admin")
 	   .password("{noop}admin")
 	   .roles("ADMIN");
+	}*/
+	
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	   auth.userDetailsService(userServiceImpl).passwordEncoder(bCrypt);
 	}
 	
 	

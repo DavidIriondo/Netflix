@@ -81,13 +81,14 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		User user = userRepository.findByName(username);
 		
 		//Roles, here we need to retrieve the user´roles from data base
-		Set<GrantedAuthority> roles = new HashSet<GrantedAuthority>();
+		List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
 		
 		//Assing roles
 		for (com.everis.d4i.tutorial.security.entities.Role r : user.getRoles()) {
-			System.out.println("USER ROLE : " + r.getType());
-			roles.add(new SimpleGrantedAuthority(r.getType()));
+			System.out.println(r.getType());
+			roles.add(new SimpleGrantedAuthority("ROLE_" +r.getType()));
 		}
+		System.out.println(roles);
 		
 		UserDetails userDetails =  new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), roles);
 		

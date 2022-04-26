@@ -215,6 +215,14 @@ class ActorControllerImplTest {
 			
 			assertEquals(acResult.size(), acList.size());
 			
+			//Two list contains same objects
+			for (ActorChapterProjection aci : acResult) {
+				
+				assertTrue(acList.contains(aci));
+			}
+			
+			
+			
 		} catch (NetflixException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
