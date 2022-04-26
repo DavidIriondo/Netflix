@@ -26,12 +26,17 @@ import com.everis.d4i.tutorial.services.impl.ActorServiceImpl;
 import com.everis.d4i.tutorial.utils.constants.CommonConstants;
 import com.everis.d4i.tutorial.utils.constants.RestConstants;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ExampleProperty;
 
 
 @RestController
 @RequestMapping(RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 + RestConstants.RESOURCE_ACTOR)
 public class ActorControllerImpl implements ActorController{
-
+ 
 	@Autowired
 	private ActorServiceImpl actorServiceImpl;
 	
@@ -39,8 +44,9 @@ public class ActorControllerImpl implements ActorController{
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Return a list of Actors", notes = "Return an Array of Actor type with all his properties")
 	public NetflixResponse<List<ActorRest>> getActors() throws NetflixException {
-		
+		 
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				actorServiceImpl.getListOfActors());
 	}
@@ -48,6 +54,7 @@ public class ActorControllerImpl implements ActorController{
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Return a single actor", notes = "Return a single Actor resource with all his properties")
 	public NetflixResponse<ActorRest> getActorById(@PathVariable Long id) throws NetflixException {
 		
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
@@ -65,6 +72,7 @@ public class ActorControllerImpl implements ActorController{
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@PatchMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Update a single Actor information", notes = "Return the updated Actor resource")
 	public NetflixResponse<ActorRest> updateActor(@PathVariable Long id,@RequestBody Actor actor) throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				actorServiceImpl.updateActor(id, actor));
@@ -73,6 +81,7 @@ public class ActorControllerImpl implements ActorController{
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@DeleteMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Delete a single Actor resource", notes = "Return the deleted Actor resource")
 	public NetflixResponse<ActorRest> deleteActor(@PathVariable Long id) throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				actorServiceImpl.deleteActor(id));
@@ -81,8 +90,9 @@ public class ActorControllerImpl implements ActorController{
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = RestConstants.RESOURCE_ID + RestConstants.RESOURCE_TV_SHOW, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get a list of episodes and tvshows where an actor has participated ",
+	notes = "Return a list of tvshows and each episode of the tvshow where a single Actor has participated")
 	public NetflixResponse<List<ActorChapterProjection>> getActorTvShows(@PathVariable Long id) throws NetflixException {
-		
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				actorServiceImpl.actorTvshows(id));
 	}

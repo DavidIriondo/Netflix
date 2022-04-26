@@ -15,26 +15,35 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "ACTORS")
+@ApiModel(value = "Car", description = "The model for car")
 public class Actor implements Serializable {
 
 	private static final long serialVersionUID = 4916713907852425156L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(hidden = true)
 	private Long id;
 	
 	@Column(name = "NAME")
+	@ApiModelProperty(value = "name", example = "Lucian")
 	private String name;
 	
 	@Column(name = "SURNAME")
+	@ApiModelProperty(value = "name", example = "Smith")
 	private String surname;
 	
 	@Column(name = "AGE")
+	@ApiModelProperty(value = "age", example = "22")
 	private Integer age;
 	
 	//N:M relationship with Chapters model
+	@ApiModelProperty(value = "chapters", example = "[]")
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "PARTICIPATES",

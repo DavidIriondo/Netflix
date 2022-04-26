@@ -23,13 +23,4 @@ public class AwardServiceImpl implements AwardService{
 		return modelMapper.map(awardRepository.getOne(id), AwardRest.class);
 	}
 
-	/*
-	@Override
-	public AwardRest postAward(Award award, Long id) {
-		
-		awardRepository.save(award);
-		
-		return modelMapper.map(award, AwardRest.class);
-	}*/
-	
 }

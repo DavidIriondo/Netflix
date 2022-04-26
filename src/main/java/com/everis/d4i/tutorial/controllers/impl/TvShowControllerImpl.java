@@ -31,6 +31,8 @@ import com.everis.d4i.tutorial.services.impl.TvShowServiceImpl;
 import com.everis.d4i.tutorial.utils.constants.CommonConstants;
 import com.everis.d4i.tutorial.utils.constants.RestConstants;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 + RestConstants.RESOURCE_TV_SHOW)
 public class TvShowControllerImpl implements TvShowController {
@@ -39,11 +41,12 @@ public class TvShowControllerImpl implements TvShowController {
 	private TvShowService tvShowService;
 	
 	@Autowired
-	private TvShowServiceImpl tvShowServiceImpl;
-	
+	private TvShowServiceImpl tvShowServiceImpl; 
+	 
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get a list of tvShows", notes = "Returns all tvshows, it depends of the category(category ID)")
 	public NetflixResponse<List<TvShowRest>> getTvShowsByCategory(@RequestParam Long categoryId)
 			throws NetflixException {
 		
@@ -55,15 +58,17 @@ public class TvShowControllerImpl implements TvShowController {
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get a single tvshow resource", notes = "Return a single tvshow given by the ID")
 	public NetflixResponse<TvShowRest> getTvShowById(@PathVariable Long id) throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				tvShowService.getTvShowById(id));
 	}
 
 	
-	@Override
+	@Override 
 	@ResponseStatus(HttpStatus.OK)
 	@PatchMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get a list of tvShows", notes = "Returns all tvshows, it depends of the category(category ID)")
 	public NetflixResponse<TvShowRest> updateTvShow(@PathVariable Long id, @RequestBody TvShow tvShow) throws NetflixException {
 		TvShowRest tv;
 		
@@ -77,6 +82,7 @@ public class TvShowControllerImpl implements TvShowController {
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@DeleteMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Delete a tvshow resource", notes = "Returns the deleted tvshow resource")
 	public NetflixResponse<TvShowRest> deleteTvShow(@PathVariable Long id) throws NetflixException {
 		TvShowRest tv;
 		
@@ -89,10 +95,12 @@ public class TvShowControllerImpl implements TvShowController {
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(value = RestConstants.RESOURCE_ID + RestConstants.RESOURCE_CATEGORY, produces = MediaType.APPLICATION_JSON_VALUE)
-	public NetflixResponse<TvShowRest> addCategories(@PathVariable Long id, @RequestBody List<Long> list) throws NetflixException {
+	@ApiOperation(value = "Add a categories to a single tvshow", 
+	notes = "Add one or many categories to a single tvShow. Return the updated tvshow resource. You must introduce an array of categories id. For example : [1, 3, 7, 10]")
+	public NetflixResponse<TvShowRest> addCategories(@PathVariable Long id, @RequestBody List<Long> categoriesID) throws NetflixException {
 		TvShowRest tv;
 		
-		tv =  tvShowServiceImpl.addCategories(id, list);
+		tv =  tvShowServiceImpl.addCategories(id, categoriesID);
 		
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				tv);
@@ -101,6 +109,7 @@ public class TvShowControllerImpl implements TvShowController {
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = RestConstants.RESOURCE_ID + RestConstants.RESOURCE_AWARD, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get a list of awards", notes = "Returns a list of awards won by a single tvshow")
 	public NetflixResponse<List<AwardRest>> tvShowAwards(@PathVariable Long id) throws NetflixException {
 		
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,

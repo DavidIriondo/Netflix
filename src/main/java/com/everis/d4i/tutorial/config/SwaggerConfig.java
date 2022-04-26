@@ -31,14 +31,16 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * paste JSON and generate document<br/>
  *
  */
-@Configuration
+@Configuration 
 @EnableSwagger2
 public class SwaggerConfig {
-
+ 
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).groupName("Netflix").apiInfo(apiInfo()).select()
-				.paths(regex(".*" + RestConstants.APPLICATION_NAME + "/.*")).build();
+				.paths(regex(".*" + RestConstants.APPLICATION_NAME + "/.*"))
+				
+				.build();
 	}
 
 	private ApiInfo apiInfo() {

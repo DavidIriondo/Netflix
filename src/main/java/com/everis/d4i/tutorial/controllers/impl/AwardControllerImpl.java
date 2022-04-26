@@ -25,6 +25,8 @@ import com.everis.d4i.tutorial.services.impl.AwardServiceImpl;
 import com.everis.d4i.tutorial.utils.constants.CommonConstants;
 import com.everis.d4i.tutorial.utils.constants.RestConstants;
 
+import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 @RequestMapping(RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 + RestConstants.RESOURCE_AWARD)
@@ -38,18 +40,11 @@ public class AwardControllerImpl implements AwardController{
 	
 	@Override
 	@GetMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Return a single Award resource", notes = "Return the Award requested by id")
 	public NetflixResponse<AwardRest> getAwardById(@PathVariable Long id) throws NetflixException {
 
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				awardServiceImpl.getAwardById(id));
 	}
-
-	/*
-	@Override
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public NetflixResponse<AwardRest> postAward(@RequestBody Award award) throws NetflixException {
-		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
-				awardServiceImpl.postAward(award));
-	}*/
 
 }

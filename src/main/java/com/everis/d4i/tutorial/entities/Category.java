@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "CATEGORIES")
 public class Category implements Serializable {
@@ -19,12 +21,15 @@ public class Category implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	@Column(name = "NAME", unique = true)
+	@ApiModelProperty(value = "name", example = "THILLER")
 	private String name;
 
 	@ManyToMany(mappedBy = "category")
+	@ApiModelProperty(value = "tvshows", example = "[]")
 	private List<TvShow> tvShows;
 
 	public Long getId() {

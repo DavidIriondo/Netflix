@@ -13,6 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "AWARDS")
 public class Award implements Serializable {
@@ -21,9 +25,11 @@ public class Award implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@ApiModelProperty(hidden = true)
 	private Long id;
 	
 	@Column(name = "NAME")
+	@ApiModelProperty(value = "name", example = "Oscars")
 	private String name;
 	
 	@Column(name = "DATE")
@@ -31,6 +37,7 @@ public class Award implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TV_SHOW_ID", nullable = false)
+	@ApiModelProperty(example = "[]")
 	private TvShow tvShowAward;
 
 	//Getters and Setters

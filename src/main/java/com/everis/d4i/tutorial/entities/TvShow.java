@@ -17,6 +17,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "TV_SHOWS")
 public class TvShow implements Serializable {
@@ -25,21 +27,27 @@ public class TvShow implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	@Column(name = "NAME")
+	@ApiModelProperty(value = "name", example = "Los simpson")
 	private String name;
 
 	@Column(name = "SHORT_DESC", nullable = true)
+	@ApiModelProperty(value = "shortDescription", example = "short description")
 	private String shortDescription;
 
 	@Column(name = "LONG_DESC", nullable = true)
+	@ApiModelProperty(value = "longDescription", example = "long description")
 	private String longDescription;
 
 	@Column(name = "YEAR")
+	@ApiModelProperty(value = "year", example = "1095")
 	private Year year;
 
 	@Column(name = "RECOMMENDED_AGE")
+	@ApiModelProperty(value = "recommendedAge", example = "7")
 	private byte recommendedAge;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -47,16 +55,20 @@ public class TvShow implements Serializable {
 			name = "TV_SHOW_CATEGORIES",
 			joinColumns = @JoinColumn(name = "TVSHOW_ID"),
 			inverseJoinColumns = @JoinColumn(name = "CATEGORIES_ID"))
+	@ApiModelProperty(value = "category", example = "[]")
 	private List<Category> category;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tvShowAward")
+	@ApiModelProperty(value = "awards", example = "[]")
 	private List<Award> awards;
 	
 
 	@Column(name = "ADVERTISING", nullable = true)
+	@ApiModelProperty(value = "advertising", example = "advertesing")
 	private String advertising;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tvShow")
+	@ApiModelProperty(value = "seasons", example = "[]")
 	private List<Season> seasons;
 
 	public Long getId() {

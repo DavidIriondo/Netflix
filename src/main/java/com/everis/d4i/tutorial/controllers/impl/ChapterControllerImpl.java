@@ -23,6 +23,8 @@ import com.everis.d4i.tutorial.services.impl.ChapterServiceImpl;
 import com.everis.d4i.tutorial.utils.constants.CommonConstants;
 import com.everis.d4i.tutorial.utils.constants.RestConstants;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(RestConstants.APPLICATION_NAME + RestConstants.API_VERSION_1 + RestConstants.RESOURCE_CHAPTER)
 public class ChapterControllerImpl implements ChapterController {
@@ -36,15 +38,17 @@ public class ChapterControllerImpl implements ChapterController {
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get a list of chapters", notes = "Return a list of all the availables chapters on data base. This list is probably to long.")
 	public NetflixResponse<List<ChapterRest>> getChaptersByTvShowIdAndSeasonNumber(@PathVariable Long tvShowId,
 			@PathVariable short seasonNumber) throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				chapterService.getChaptersByTvShowIdAndSeasonNumber(tvShowId, seasonNumber));
-	}
+	} 
 
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = RestConstants.RESOURCE_NUMBER, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get a single chapter", notes = "Return a single chapter. It depends of Tvshow ID, Season ID and Chapter ID")
 	public NetflixResponse<ChapterRest> getChapterByTvShowIdAndSeasonNumberAndChapterNumber(@PathVariable Long tvShowId,
 			@PathVariable short seasonNumber, @PathVariable short number) throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
@@ -54,6 +58,7 @@ public class ChapterControllerImpl implements ChapterController {
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@PatchMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Update a chapter resource", notes = "Return the updated respurce")
 	public NetflixResponse<ChapterRest> updateTvShow(@PathVariable Long id,@RequestBody Chapter chapter) throws NetflixException {
 		ChapterRest ch;
 		

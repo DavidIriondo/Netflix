@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "SEASONS")
 public class Season implements Serializable {
@@ -23,19 +25,24 @@ public class Season implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	@Column(name = "NUMBER")
+	@ApiModelProperty(value = "number", example = "1")
 	private short number;
 
 	@Column(name = "NAME")
+	@ApiModelProperty(value = "name", example = "season 1")
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TV_SHOW_ID", nullable = false)
+	@ApiModelProperty(value = "tvShow", example = "{}")
 	private TvShow tvShow;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "season")
+	@ApiModelProperty(value = "chapters", example = "[]")
 	private List<Chapter> chapters;
 
 	public Long getId() {

@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "CHAPTERS")
 public class Chapter implements Serializable {
@@ -22,22 +24,28 @@ public class Chapter implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	@Column(name = "NUMBER")
+	@ApiModelProperty(value = "number", example = "2")
 	private short number;
 
 	@Column(name = "NAME")
+	@ApiModelProperty(value = "name", example = "cap 2")
 	private String name;
 
 	@Column(name = "DURATION")
+	@ApiModelProperty(value = "duration", example = "30")
 	private short duration;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SEASON_ID", nullable = false)
+	@ApiModelProperty(value = "season", example = "{}")
 	private Season season;
 	
 	@ManyToMany(mappedBy = "chapters")
+	@ApiModelProperty(value = "actors", example = "[]")
 	private List<Actor> actors;
 	
 	//Getters and Setters

@@ -22,6 +22,7 @@ import com.everis.d4i.tutorial.services.CategoryService;
 import com.everis.d4i.tutorial.utils.constants.CommonConstants;
 import com.everis.d4i.tutorial.utils.constants.RestConstants;
 
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
@@ -34,14 +35,16 @@ public class CategoryControllerImpl implements CategoryController {
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get a list categories", notes = "Return a list of all the available categories")
 	public NetflixResponse<List<CategoryRest>> getCategories() throws NetflixException {
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				categoryService.getCategories());
 	}
 
-	@Override
-	@ResponseStatus(HttpStatus.OK)
+	@Override 
+	@ResponseStatus(HttpStatus.OK) 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Create a new category resource", notes = "Return the posted category")
 	public NetflixResponse<CategoryRest> createCategory(
 			@ApiParam(value = RestConstants.PARAMETER_CATEGORY, required = true) @RequestBody @Valid final CategoryRest categoryRest)
 			throws NetflixException {
