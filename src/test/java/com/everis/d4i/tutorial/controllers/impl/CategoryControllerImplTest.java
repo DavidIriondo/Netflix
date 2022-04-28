@@ -1,6 +1,8 @@
 package com.everis.d4i.tutorial.controllers.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -12,11 +14,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.everis.d4i.tutorial.entities.Category;
 import com.everis.d4i.tutorial.json.CategoryRest;
+import com.everis.d4i.tutorial.services.CategoryService;
 import com.everis.d4i.tutorial.services.impl.CategoryServiceImpl;
 
 class CategoryControllerImplTest {
+	
+	@Mock
+	private CategoryService categoryService;
 	
 	@Mock
 	private CategoryServiceImpl categoryServiceImpl;
@@ -54,10 +59,16 @@ class CategoryControllerImplTest {
 			caList.add(ca2);
 			caList.add(ca3);
 			
-			when(categoryServiceImpl.getCategories()).thenReturn(caList);
+			when(categoryService.getCategories()).thenReturn(caList);
 			
 			List<CategoryRest> caResult =   categoryControllerImpl.getCategories().getData();
 			
+			//VERIFY
+			verify(categoryService, atLeast(1)).getCategories();
+			
+			
+			//ASSERTS
+			assertNotNull(caResult);
 			for (CategoryRest car : caResult) {
 				assertTrue(caList.contains(car));
 			}
@@ -75,13 +86,18 @@ class CategoryControllerImplTest {
 		
 		ca1.setId(1L);
 		ca1.setName("THILLER");
-		
+		  
 		try {
 			
-			when(categoryServiceImpl.createCategories(ca1)).thenReturn(ca1);
+			when(categoryService.createCategories(ca1)).thenReturn(ca1);
 			
 			CategoryRest caResult =  categoryControllerImpl.createCategory(ca1).getData();
 			
+			//VERIFY
+			verify(categoryService, atLeast(1)).createCategories(ca1);
+			
+			//ASSERT
+			assertNotNull(caResult);
 			assertEquals(ca1.getId(), caResult.getId());
 			assertEquals(ca1.getName(), caResult.getName());
 			

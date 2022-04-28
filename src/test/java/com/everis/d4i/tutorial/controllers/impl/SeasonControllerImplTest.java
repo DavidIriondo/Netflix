@@ -3,6 +3,8 @@ package com.everis.d4i.tutorial.controllers.impl;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyShort;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -61,6 +63,11 @@ class SeasonControllerImplTest {
 			
 			List<SeasonRest> ssResult =  seasonControllerImpl.getSeasonsByTvShow(anyLong()).getData();
 			
+			//VERIFY
+			verify(seasonService, atLeast(1)).getSeasonsByTvShow(anyLong());
+			
+			//SEASSON
+			assertNotNull(ssResult);
 			for (SeasonRest ssr : ssResult) {
 				assertTrue(ssList.contains(ssr));
 			}
@@ -78,6 +85,7 @@ class SeasonControllerImplTest {
 		SeasonRest ss = new SeasonRest();
 		ss.setId(1L);
 		ss.setName("Season 1");
+		ss.setNumber((short)1);
 		
 		
 		try {
@@ -86,8 +94,14 @@ class SeasonControllerImplTest {
 			
 			SeasonRest ssResult =  seasonControllerImpl.getSeasonByTvShowIdAndSeasonNumber(anyLong(), anyShort()).getData();
 			
+			//VERIFY
+			verify(seasonService, atLeast(1)).getSeasonByTvShowIdAndSeasonNumber(anyLong(), anyShort());
+			
+			//SEASSON
+			assertNotNull(ssResult);
 			assertTrue(ss.getId() == ssResult.getId());
 			assertTrue(ss.getName().equals(ssResult.getName()));
+			assertTrue(ss.getNumber() == ssResult.getNumber());
 			
 			
 		} catch (Exception e) {

@@ -3,6 +3,8 @@ package com.everis.d4i.tutorial.controllers.impl;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyVararg;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -62,8 +64,12 @@ class ActorControllerImplTest {
 			
 			List<ActorRest> actorsResult = actorControllerImpl.getActors().getData();
 			
-			assertTrue(actorsResult.size() == 4);
+			//VERIFY
+			verify(actorServiceImpl, atLeast(1)).getListOfActors();
 			
+			//ASSERT
+			assertNotNull(actorsResult);
+			assertTrue(actorsResult.size() == 4);
 			assertTrue(actorsResult.contains(ac1));
 			assertTrue(actorsResult.contains(ac2));
 			assertTrue(actorsResult.contains(ac3));
@@ -80,6 +86,8 @@ class ActorControllerImplTest {
 		ActorRest ac1 = new ActorRest();
 		ac1.setId(1L);
 		ac1.setName("Dwayne");
+		ac1.setSurname("Johnson");
+		ac1.setAge(30);
 		
 		
 		try {
@@ -88,8 +96,15 @@ class ActorControllerImplTest {
 			
 			ActorRest acResult = actorControllerImpl.getActorById(1L).getData();
 			
+			//VERIFY
+			verify(actorServiceImpl, atLeast(1)).getActorbyId(1L);
+			
+			//ASSERT
+			assertNotNull(acResult);
 			assertTrue(ac1.getId() == acResult.getId());
 			assertTrue(ac1.getName().equals(acResult.getName()));
+			assertTrue(ac1.getSurname().equals(acResult.getSurname()));
+			assertTrue(ac1.getAge().equals(acResult.getAge()));
 			
 			
 		} catch (Exception e) {
@@ -107,40 +122,61 @@ class ActorControllerImplTest {
 		ac.setAge(50);
 		ac.setSurname("Johnson");
 		
+		Actor acPost = new Actor();
+		acPost.setId(1L);
+		acPost.setName("Dwayne");
+		acPost.setAge(50);
+		acPost.setSurname("Johnson");
+		
 		try {
 			
-			when(actorServiceImpl.postActor(new Actor())).thenReturn(ac);
+			when(actorServiceImpl.postActor(acPost)).thenReturn(ac);
 			
-			ActorRest  acResult =  actorControllerImpl.postActor(new Actor()).getData();
+			ActorRest  acResult =  actorControllerImpl.postActor(acPost).getData();
 			
+			//VERIFY
+			verify(actorServiceImpl, atLeast(1)).postActor(acPost);
+			
+			//ASSERT
+			assertNotNull(acResult);
 			assertTrue(ac.getId() == acResult.getId());
 			assertTrue(ac.getName() == acResult.getName());
 			assertTrue(ac.getSurname() == acResult.getSurname());
 			assertTrue(ac.getAge() == acResult.getAge());
 			
-			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
-		
 	}
 
 	@Test
 	void testUpdateActor() {
 		
-		ActorRest ac = new ActorRest();
+		Actor ac = new Actor();
 		ac.setId(1L);
-		ac.setName("Dwayne");
+		ac.setName("Dwayne the rock");
 		ac.setAge(50);
 		ac.setSurname("Johnson");
 		
+		
+		ActorRest acUpdated = new ActorRest();
+		acUpdated.setId(1L);
+		acUpdated.setName("Dwayne the rock");
+		acUpdated.setAge(50);
+		acUpdated.setSurname("Johnson"); 
+		
 		try {
 			
-			when(actorServiceImpl.updateActor(1L,new Actor())).thenReturn(ac);
 			
-			ActorRest  acResult =  actorControllerImpl.updateActor(1L, new Actor()).getData();
+			when(actorServiceImpl.updateActor(1L,ac)).thenReturn(acUpdated);
 			
+			ActorRest  acResult =  actorControllerImpl.updateActor(1L, ac).getData();
+			
+			//VERIFY
+			verify(actorServiceImpl, atLeast(1)).updateActor(1L, ac);
+			
+			//ASSERT
+			assertNotNull(acResult);
 			assertTrue(ac.getName() == acResult.getName());
 			assertTrue(ac.getSurname() == acResult.getSurname());
 			assertTrue(ac.getAge() == acResult.getAge());
@@ -155,6 +191,9 @@ class ActorControllerImplTest {
 		
 		ActorRest ac = new ActorRest();
 		ac.setId(1L);
+		ac.setName("Dwayne the rock");
+		ac.setAge(50);
+		ac.setSurname("Johnson");
 		
 		try {
 			
@@ -162,7 +201,14 @@ class ActorControllerImplTest {
 			
 			ActorRest  acResult =  actorControllerImpl.deleteActor(1L).getData();
 			
-			assertTrue(ac.getId() == acResult.getId());
+			//VERIFY
+			verify(actorServiceImpl, atLeast(1)).deleteActor(1L);
+			
+			//ASSERT
+			assertNotNull(acResult);
+			assertTrue(ac.getName() == acResult.getName());
+			assertTrue(ac.getSurname() == acResult.getSurname());
+			assertTrue(ac.getAge() == acResult.getAge());
 			
 			
 		} catch (Exception e) {
@@ -215,13 +261,16 @@ class ActorControllerImplTest {
 			
 			assertEquals(acResult.size(), acList.size());
 			
+			//VERIFY
+			verify(actorServiceImpl, atLeast(1)).actorTvshows(1L);
+			
+			//ASSERT
+			assertNotNull(acResult);
 			//Two list contains same objects
 			for (ActorChapterProjection aci : acResult) {
 				
 				assertTrue(acList.contains(aci));
 			}
-			
-			
 			
 		} catch (NetflixException e) {
 			// TODO Auto-generated catch block

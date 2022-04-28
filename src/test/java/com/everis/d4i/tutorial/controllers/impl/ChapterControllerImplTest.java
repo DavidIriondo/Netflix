@@ -1,8 +1,11 @@
 package com.everis.d4i.tutorial.controllers.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyShort;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -38,7 +41,7 @@ class ChapterControllerImplTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-	}
+	} 
 
 	@Test
 	void testGetChaptersByTvShowIdAndSeasonNumber() {
@@ -63,10 +66,15 @@ class ChapterControllerImplTest {
 		
 		try {
 			
-			when(chapterServiceImpl.getChaptersByTvShowIdAndSeasonNumber(anyLong(), anyShort())).thenReturn(chList);
+			when(chapterService.getChaptersByTvShowIdAndSeasonNumber(anyLong(), anyShort())).thenReturn(chList);
 			
 			List<ChapterRest> chResult = chapterControllerImpl.getChaptersByTvShowIdAndSeasonNumber(anyLong(), anyShort()).getData();
 			
+			//VERIFY
+			verify(chapterService, atLeast(1)).getChaptersByTvShowIdAndSeasonNumber(anyLong(), anyShort());
+			
+			//ASSERT
+			assertNotNull(chResult);
 			for (ChapterRest chr : chResult) {
 				
 				assertTrue(chList.contains(chr));
@@ -76,10 +84,6 @@ class ChapterControllerImplTest {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
-		
-		
-		
 	}
 
 	@Test
@@ -88,16 +92,26 @@ class ChapterControllerImplTest {
 		ChapterRest ch = new ChapterRest();
 		ch.setId(1L);
 		ch.setName("Cap 1");
+		ch.setNumber((short) 2);
+		ch.setDuration((short) 30);
 		
-		try {
-			
-			when(chapterServiceImpl.getChapterByTvShowIdAndSeasonNumberAndChapterNumber(anyLong(), anyShort(), anyShort()))
+		try { 
+			 
+			when(chapterService.getChapterByTvShowIdAndSeasonNumberAndChapterNumber(anyLong(), anyShort(), anyShort()))
 			.thenReturn(ch);
 			
 			ChapterRest chResult = chapterControllerImpl.getChapterByTvShowIdAndSeasonNumberAndChapterNumber(
 					anyLong(), anyShort(), anyShort()).getData();
 
+			//VERIFY
+			verify(chapterService, atLeast(1)).getChapterByTvShowIdAndSeasonNumberAndChapterNumber(anyLong(), anyShort(), anyShort());
+			
+			//ASSERT
+			assertNotNull(chResult);
 			assertTrue(ch.getId() == chResult.getId());
+			assertTrue(ch.getName() == chResult.getName());
+			assertTrue(ch.getDuration() == chResult.getDuration());
+			assertTrue(ch.getNumber() == chResult.getNumber());
 			
 			
 		} catch (Exception e) {
@@ -111,18 +125,34 @@ class ChapterControllerImplTest {
 	@Test
 	void testUpdateTvShow() {
 		
+		Chapter chp = new Chapter();
+		chp.setName("Cap 1"); 
+		chp.setNumber((short) 2);
+		chp.setDuration((short) 30);
+		
 		ChapterRest ch = new ChapterRest();
 		ch.setId(1L);
 		ch.setName("Cap 1");
+		ch.setNumber((short) 2);
+		ch.setDuration((short) 30);
+		
+		 
 		
 		try {
+			 
+			when(chapterServiceImpl.updateChapter(1L,chp)).thenReturn(ch);
 			
-			when(chapterService.updateChapter(1L,new Chapter())).thenReturn(ch);
+			ChapterRest  chResult =  chapterControllerImpl.updateTvShow(1L, chp).getData();
 			
-			ChapterRest  chResult =  chapterControllerImpl.updateTvShow(1L, new Chapter()).getData();
+			//VERIFY
+			verify(chapterServiceImpl, atLeast(1)).updateChapter(1L, chp);
 			
+			//ASSERT
+			assertNotNull(chResult);
 			assertTrue(ch.getId() == chResult.getId());
 			assertTrue(ch.getName() == chResult.getName());
+			assertTrue(ch.getDuration() == chResult.getDuration());
+			assertTrue(ch.getNumber() == chResult.getNumber());
 			// TODO: handle exception
 		}catch (Exception e) {
 			// TODO: handle exception

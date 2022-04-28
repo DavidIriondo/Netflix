@@ -1,6 +1,11 @@
 package com.everis.d4i.tutorial.controllers.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -22,7 +27,6 @@ import com.everis.d4i.tutorial.exceptions.NetflixException;
 import com.everis.d4i.tutorial.json.AwardRest;
 import com.everis.d4i.tutorial.json.CategoryRest;
 import com.everis.d4i.tutorial.json.TvShowRest;
-import com.everis.d4i.tutorial.responses.NetflixResponse;
 import com.everis.d4i.tutorial.services.TvShowService;
 import com.everis.d4i.tutorial.services.impl.TvShowServiceImpl;
 
@@ -82,16 +86,29 @@ class TvShowControllerImplTest {
 		
 		try {
 			
-			when(tvShowService.getTvShowsByCategory(1L)).thenReturn(tvShowList);
+			when(tvShowService.getTvShowsByCategory(anyLong())).thenReturn(tvShowList);
 			
-			List<TvShowRest> tvResult =  tvShowControllerImpl.getTvShowsByCategory(1L).getData();
+			List<TvShowRest> tvResult =  tvShowControllerImpl.getTvShowsByCategory(anyLong()).getData();
 			
-			assertEquals(tvShowList.size(), tvResult.size());
 			
-			assertEquals(tvShowList.get(0).getId(), tvResult.get(0).getId());
+			//VERIFY
+			verify(tvShowService, atLeast(1)).getTvShowsByCategory(anyLong());
+			
+			verify(tvShowControllerImpl, atLeast(1)).getTvShowsByCategory(anyLong());
+			
+			
+			//ASSERTS
+			assertNotNull(tvResult);//Not null
+			assertEquals(tvShowList.size(), tvResult.size());//same size
+			for (TvShowRest tvr : tvResult) {
+				assertTrue(tvShowList.contains(tvr));
+			}
+			
+			
+			
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			// TODO: handle exception 
 		}
 		
 	};
@@ -102,13 +119,24 @@ class TvShowControllerImplTest {
 		TvShowRest tv = new TvShowRest();
 		tv.setId(1L);
 		tv.setName("Los simpson");
+		tv.setShortDescription("American Tvshow");
+		tv.setLongDescription("The series is a satire towards American society that narrates the life and daily life of a middle-class family in that country...");
 		
 		try {
 			when(tvShowService.getTvShowById(1L)).thenReturn(tv);
 			
 		 	TvShowRest tvResult =  tvShowControllerImpl.getTvShowById(1L).getData();
 		 	
+		 	//VERIFY
+		 	verify(tvShowService, atLeast(1)).getTvShowById(anyLong());
+		 	
+		 	//ASSERTS
+		 	assertNotNull(tvResult);
 		 	assertEquals(tv.getId(), tvResult.getId());
+		 	assertEquals(tv.getName(), tvResult.getName());
+		 	assertEquals(tv.getShortDescription(), tvResult.getShortDescription());
+		 	assertEquals(tv.getLongDescription(), tvResult.getLongDescription());
+		 	
 			
 		} catch (NetflixException e) {
 			// TODO Auto-generated catch block
@@ -121,28 +149,27 @@ class TvShowControllerImplTest {
 	void testUpdateTvShow() {
 		//Create the test resource
 		TvShow tv = new TvShow();
-		tv.setId(2L);
+		tv.setId(1L);
 		tv.setName("Los simpson");
 		//Resource fined
 		TvShowRest tvUpdated = new TvShowRest();
 		tv.setId(1L);
 		tv.setName("Friends");
 		
-		//Create the test return resource
-		NetflixResponse<TvShowRest> tvReturned = new NetflixResponse<TvShowRest>();
-		TvShowRest showRest = new TvShowRest();
-		showRest.setName("Los simpson");
-		tvReturned.setData(showRest);
-		
 		//Update tv show
 		try {
-			when(tvShowServiceImpl.updateTvShow(1L, tv))
-			.thenReturn(tvUpdated);
+			when(tvShowServiceImpl.updateTvShow(1L, tv)).thenReturn(tvUpdated);
 			
 			TvShowRest tvResult = tvShowControllerImpl.updateTvShow(1L, tv).getData();
 			
-			//
+		 	//VERIFY
+		 	verify(tvShowServiceImpl, atLeast(1)).updateTvShow(anyLong(), any());
+		 	
+		 	//ASSERTS
+		 	assertNotNull(tvResult);
+		 	assertEquals(tvUpdated.getId(), tvResult.getId());
 			assertEquals(tvUpdated.getName(), tvResult.getName());
+			assertNotEquals(tv.getName(), tvResult.getName());
 			
 			
 		} catch (NetflixException e) {
@@ -165,7 +192,13 @@ class TvShowControllerImplTest {
 			
 			TvShowRest tvResult = tvShowControllerImpl.deleteTvShow(1L).getData();
 			
+		 	//VERIFY
+		 	verify(tvShowServiceImpl, atLeast(1)).deleteTvShow(1L);
+		 	
+		 	//ASSERTS
+		 	assertNotNull(tvResult);
 			assertEquals(tvResult.getId(), tv.getId());
+			assertEquals(tvResult.getName(), tv.getName());
 			
 		} catch (NetflixException e) {
 			// TODO Auto-generated catch block
@@ -218,15 +251,23 @@ class TvShowControllerImplTest {
 		
 		try {
 			
-			
+			 
 			when(tvShowServiceImpl.addCategories(1L, categoriesID)).thenReturn(modelMapper.map(tvResult, TvShowRest.class));
 			
 			TvShowRest tvshow =  tvShowControllerImpl.addCategories(1L, categoriesID).getData();
 			
-			//If tvshow´category list is greater than 0 
-			assertTrue(tvshow.getCategory().size() > 0 && tvshow.getCategory().size() == 4);
+		 	//VERIFY
+		 	verify(tvShowServiceImpl, atLeast(1)).addCategories(1L, categoriesID);
+		 	
+		 	//ASSERTS
+			//If tv show´category list is greater than 0
+		 	assertNotNull(tvshow);
+			assertTrue(tvshow.getCategory().size() == 4);
 			
-			
+			for (Category ct : categories) {
+				assertFalse(tvshow.getCategory().contains(ct));
+			}
+				
 			
 			
 		} catch (NetflixException e) {
@@ -268,6 +309,11 @@ class TvShowControllerImplTest {
 			
 			List<AwardRest> awList  = tvShowControllerImpl.tvShowAwards(1L).getData();
 			
+		 	//VERIFY
+		 	verify(tvShowServiceImpl, atLeast(1)).tvShowAwards(anyLong());
+		 	
+		 	//ASSERTS
+		 	assertNotNull(awList);
 			assertTrue(awList.size() == 4);
 			
 		} catch (NetflixException e) {
