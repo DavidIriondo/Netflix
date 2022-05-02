@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.management.relation.Role;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	}
 	
 	@Override
+	@Transactional
 	public User postUser(User user) {
 		//Encrypting password
 		user.setPassword(encoder.encode(user.getPassword()));

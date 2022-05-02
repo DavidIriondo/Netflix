@@ -2,6 +2,8 @@ package com.everis.d4i.tutorial.security.services.Impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,7 @@ public class RoleServiceImpl implements RoleService{
 	}
 
 	@Override
+	@Transactional
 	public Role postRole(Role user) {
 		
 		Role r = roleRepository.save(user);

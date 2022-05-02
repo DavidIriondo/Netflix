@@ -1,4 +1,4 @@
-package com.everis.d4i.tutorial.controllers.impl;
+package com.everis.d4i.tutorial.controllers.impl.unit;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.everis.d4i.tutorial.controllers.impl.ChapterControllerImpl;
 import com.everis.d4i.tutorial.entities.Actor;
 import com.everis.d4i.tutorial.entities.Chapter;
 import com.everis.d4i.tutorial.json.ActorRest;

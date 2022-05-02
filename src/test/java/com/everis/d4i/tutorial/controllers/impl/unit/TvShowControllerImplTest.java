@@ -1,4 +1,4 @@
-package com.everis.d4i.tutorial.controllers.impl;
+package com.everis.d4i.tutorial.controllers.impl.unit;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,6 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import com.everis.d4i.tutorial.controllers.impl.TvShowControllerImpl;
 import com.everis.d4i.tutorial.entities.Category;
 import com.everis.d4i.tutorial.entities.TvShow;
 import com.everis.d4i.tutorial.exceptions.NetflixException;

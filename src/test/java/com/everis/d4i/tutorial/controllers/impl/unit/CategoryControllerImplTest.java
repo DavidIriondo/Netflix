@@ -1,4 +1,4 @@
-package com.everis.d4i.tutorial.controllers.impl;
+package com.everis.d4i.tutorial.controllers.impl.unit;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.atLeast;
@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.everis.d4i.tutorial.controllers.impl.CategoryControllerImpl;
 import com.everis.d4i.tutorial.json.CategoryRest;
 import com.everis.d4i.tutorial.services.CategoryService;
 import com.everis.d4i.tutorial.services.impl.CategoryServiceImpl;
