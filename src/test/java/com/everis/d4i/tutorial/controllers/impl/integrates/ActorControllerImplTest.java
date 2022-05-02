@@ -1,6 +1,7 @@
 package com.everis.d4i.tutorial.controllers.impl.integrates;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.isA;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -34,6 +36,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.Base64Utils;
 
 import com.everis.d4i.tutorial.NetflixMain;
+import com.everis.d4i.tutorial.constants.ConstantsTest;
 import com.everis.d4i.tutorial.controllers.impl.ActorControllerImpl;
 import com.everis.d4i.tutorial.exceptions.NetflixException;
 import com.everis.d4i.tutorial.json.ActorRest;
@@ -44,7 +47,10 @@ import com.everis.d4i.tutorial.security.repositories.UserRepository;
 import com.everis.d4i.tutorial.security.services.UserService;
 import com.everis.d4i.tutorial.security.services.Impl.RoleServiceImpl;
 import com.everis.d4i.tutorial.security.services.Impl.UserServiceImpl;
+import com.everis.d4i.tutorial.utils.constants.RestConstants;
 import com.google.common.net.HttpHeaders;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @SpringBootTest()
 @ExtendWith(SpringExtension.class)
@@ -68,8 +74,6 @@ class ActorControllerImplTest {
 	 
 	@Before
 	public void setUp() throws Exception {
-		
-		System.out.println("SKEREEEE");
 	}
 
 	@Test
@@ -79,13 +83,17 @@ class ActorControllerImplTest {
 			
 			System.out.println("CANTIDAD DE USUARIOS: "+userRepository.count());
 			System.out.println("CANTIDAD DE ACTORES: "+actorRepository.count());
+			//CALLING API
 			mvc.perform(
-					MockMvcRequestBuilders.get("/netflix/v1/actors")
-					.header(HttpHeaders.AUTHORIZATION,
-		                    "Basic " + Base64Utils.encodeToString("user:1234".getBytes())))
-			.andExpect(MockMvcResultMatchers.status().isOk());
-			
-			
+					get(RestConstants.APPLICATION_NAME+RestConstants.API_VERSION_1+RestConstants.RESOURCE_ACTOR)
+					.header(HttpHeaders.AUTHORIZATION,ConstantsTest.USER_ROLE))
+			//TESTING RESPONSE
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$data.[0].id").value(1))
+			.andExpect(jsonPath("$data.[1].id").value(2))
+			.andExpect(jsonPath("$data.[2].id").value(3))
+			.andExpect(jsonPath("$data.[3].id").value(4));
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
