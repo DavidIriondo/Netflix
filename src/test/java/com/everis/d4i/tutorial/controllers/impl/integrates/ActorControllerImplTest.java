@@ -49,7 +49,6 @@ import com.google.common.net.HttpHeaders;
 @SpringBootTest()
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-//@WebMvcTest
 class ActorControllerImplTest {
 	
 	@Autowired
@@ -75,42 +74,7 @@ class ActorControllerImplTest {
 
 	@Test
 	void testGetActors() {
-		
-		//Wee need to charge the different types of users(admin, user) into the database
-		//Creating Roles
-		Role userRole = new Role();
-		userRole.setId(1L);
-		userRole.setType("USER");
-		
-		Role adminRole = new Role();
-		adminRole.setId(2L);
-		adminRole.setType("ADMIN");
-		
-		roleServiceImpl.postRole(userRole);
-		roleServiceImpl.postRole(adminRole);
-		
-		List<Role> userRoles = new ArrayList<>();
-		userRoles.add(userRole);
-		
-		List<Role> adminRoles = new ArrayList<>();
-		adminRoles.add(adminRole);
-		
-		//Creating Users
-		
-		User user = new User();
-		user.setId(1L);
-		user.setName("user");
-		user.setPassword("1234");
-		user.setRoles(userRoles);
-		
-		User admin = new User();
-		admin.setId(2L);
-		admin.setName("admin");
-		admin.setPassword("1234");
-		admin.setRoles(adminRoles);
-		
-		userServiceImpl.postUser(user);
-		userServiceImpl.postUser(admin);
+
 		try {
 			
 			System.out.println("CANTIDAD DE USUARIOS: "+userRepository.count());
