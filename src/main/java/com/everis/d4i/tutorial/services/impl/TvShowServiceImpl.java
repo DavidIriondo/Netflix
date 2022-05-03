@@ -99,6 +99,11 @@ public class TvShowServiceImpl implements TvShowService {
 				tv.setSeasons(newResource.getSeasons());
 			}
 			
+			//Recommended age
+			if(tv.getRecommendedAge() != 0) {
+				tv.setRecommendedAge(newResource.getRecommendedAge());
+			}
+			
 			
 			//Save new tvShow resource 
 			tvShowRepository.saveAndFlush(tv);

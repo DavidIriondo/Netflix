@@ -68,7 +68,7 @@ public class TvShowControllerImpl implements TvShowController {
 	@Override 
 	@ResponseStatus(HttpStatus.OK)
 	@PatchMapping(value = RestConstants.RESOURCE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "Get a list of tvShows", notes = "Returns all tvshows, it depends of the category(category ID)")
+	@ApiOperation(value = "Update tvShows resource", notes = "Returns the updated tvshow information")
 	public NetflixResponse<TvShowRest> updateTvShow(@PathVariable Long id, @RequestBody TvShow tvShow) throws NetflixException {
 		TvShowRest tv;
 		
