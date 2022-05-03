@@ -44,6 +44,7 @@ public class Chapter implements Serializable {
 	@ApiModelProperty(value = "season", example = "{}")
 	private Season season;
 	
+	//@ManyToMany(mappedBy = "chapters")
 	@ManyToMany(mappedBy = "chapters")
 	@ApiModelProperty(value = "actors", example = "[]")
 	private List<Actor> actors;

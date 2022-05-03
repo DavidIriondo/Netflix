@@ -14,11 +14,11 @@ import com.everis.d4i.tutorial.projections.ActorChapterProjection;
 @Repository
 public interface ActorRepository extends JpaRepository<Actor, Long>{
 
-	@Query(value = "SELECT DISTINCT netflix.tv_shows.ID as tvShowId, netflix.tv_shows.NAME as tvShow , netflix.seasons.ID as season, netflix.chapters.ID as chapter \r\n"
-			+ "FROM netflix.chapters, netflix.tv_shows, netflix.seasons, netflix.actors , netflix.participates\r\n"
-			+ "WHERE netflix.tv_shows.ID = netflix.seasons.TV_SHOW_ID\r\n"
-			+ "AND netflix.seasons.ID = netflix.chapters.SEASON_ID\r\n"
-			+ "AND netflix.chapters.ID = netflix.participates.chapters_id\r\n"
-			+ "AND netflix.participates.actor_id = ?;", nativeQuery = true)
+	@Query(value = "SELECT DISTINCT tv_shows.ID as tvShowId, tv_shows.NAME as tvShow , seasons.ID as season, chapters.ID as chapter \r\n"
+			+ "FROM chapters, tv_shows, seasons, actors , participates\r\n"
+			+ "WHERE tv_shows.ID = seasons.TV_SHOW_ID\r\n"
+			+ "AND seasons.ID = chapters.SEASON_ID\r\n"
+			+ "AND chapters.ID = participates.chapters_id\r\n"
+			+ "AND participates.actor_id = ?;", nativeQuery = true)
 	List<ActorChapterProjection> getActorChapters(Long id);
 }
