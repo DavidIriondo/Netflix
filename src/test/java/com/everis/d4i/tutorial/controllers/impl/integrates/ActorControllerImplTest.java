@@ -98,8 +98,7 @@ class ActorControllerImplTest {
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$.data.[0].id").value(1))
 			.andExpect(jsonPath("$.data.[1].id").value(2))
-			.andExpect(jsonPath("$.data.[2].id").value(3))
-			.andExpect(jsonPath("$.data.[3].id").value(4));
+			.andExpect(jsonPath("$.data.[2].id").value(3));
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

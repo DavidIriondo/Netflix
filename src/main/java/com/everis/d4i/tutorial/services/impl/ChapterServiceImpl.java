@@ -58,13 +58,13 @@ public class ChapterServiceImpl implements ChapterService {
 			
 			//TODO : Solve the update data with primitive data types
 			//Number
-			/*if(newResource.getNumber() != 0) {
-				ch.setName(newResource.getName());
+			if(newResource.getNumber() != 0) {
+				ch.setNumber(newResource.getNumber());
 			}
 			
-			if(newResource.getDuration() != null) {
-				ch.setName(newResource.getName());
-			}*/
+			if(newResource.getDuration() != 0) {
+				ch.setDuration(newResource.getDuration());
+			}
 
 			//Season
 			if(newResource.getSeason() != null) {

@@ -32,7 +32,8 @@ public class SeasonControllerImpl implements SeasonController {
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Get a list of seasons", notes = "Returns all seasons of a tvshow")
-	public NetflixResponse<List<SeasonRest>> getSeasonsByTvShow(Long tvShowId) throws NetflixException {
+	public NetflixResponse<List<SeasonRest>> getSeasonsByTvShow(@PathVariable Long tvShowId) throws NetflixException {
+		System.out.println("ESTOY SQUI");
 		return new NetflixResponse<>(CommonConstants.SUCCESS, String.valueOf(HttpStatus.OK), CommonConstants.OK,
 				seasonService.getSeasonsByTvShow(tvShowId));
 	}
