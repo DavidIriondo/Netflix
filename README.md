@@ -1,4 +1,4 @@
-### Netflix 1 Bootcamp.
+### Netflix small project example.
 
-Read [TUTORIAL](docs/tutorial Netflix v0.3.pptx) to learn about Spring Boot.
-
+This project example is full API REST Spring Boot project wich implements many dependencies like Swagger or Spring Security , and more.
+Hope this project would be usefull for you!
